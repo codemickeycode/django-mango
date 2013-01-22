@@ -1,7 +1,6 @@
-{% load i18n %}{% blocktrans %}A new proposal has been submitted:
+{% load i18n %}{% blocktrans %}<p>A new proposal has been submitted:</p>
 
-<a href="#">{{ proposal_title }}</a>
-Submitted by: {{ submitted_by }}
+<p><a href="#">{{ proposal_title }}</a><br />Submitted by: {{ submitted_by }}</p>
 
-The {{ site_name }} team
+<p>The {{ site_name }} team</p>
 {% endblocktrans %}
