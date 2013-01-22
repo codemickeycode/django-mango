@@ -114,6 +114,7 @@ TEMPLATE_CONTEXT_PROCESSORS += (
 #==============================================================================
 
 MIDDLEWARE_CLASSES += (
+    'djangomango.apps.mango.middleware.GlobalRequestMiddleware',
 )
 
 #==============================================================================
@@ -158,6 +159,8 @@ DEFAULT_FROM_EMAIL = ''
 # Miscellaneous project settings
 #==============================================================================
 
+ADMINS = ()
+MANAGERS = ADMINS
 AUTH_PROFILE_MODULE = 'mango.UserProfile'
 
 # site info

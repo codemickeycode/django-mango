@@ -33,6 +33,7 @@ class SubmitProposalView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.speaker = self.request.user
         form.instance.status = PENDING
+        form.send_email()
         messages.info(self.request,
             _(u"Thank you, your proposal is now being reviewed."))
         return super(SubmitProposalView, self).form_valid(form)
