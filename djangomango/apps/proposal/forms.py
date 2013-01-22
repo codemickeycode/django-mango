@@ -2,7 +2,7 @@ import logging
 import smtplib
 
 from django import forms
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User
@@ -35,7 +35,9 @@ class SubmitProposalForm(forms.ModelForm):
         message = render_to_string('proposal/email/submission_body.html', context)
 
         try:
-            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
-                      moderator_emails)
+            msg = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL,
+                               moderator_emails)
+            msg.content_subtype = "html"
+            msg.send()
         except smtplib.SMTPException as e:
             logger.error('Unable to send email: %s' % str(e))

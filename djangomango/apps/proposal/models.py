@@ -5,7 +5,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
 
@@ -105,8 +105,10 @@ def send_email_notification(sender, instance, **kwargs):
 
     try:
         message = render_to_string(message_tpl, context)
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
-                  [instance.speaker.email])
+        msg = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL,
+                           [instance.speaker.email])
+        msg.content_subtype = "html"
+        msg.send()
     except smtplib.SMTPException as e:
         logger.error('Unable to send email: %s' % str(e))
 
