@@ -1,10 +1,15 @@
 from django.conf.urls.defaults import patterns, url
 
 from .views import (SubmitProposalView, ScheduleProposalView,
-                    ProposalDetailsView)
+                    ProposalDetailsView, ProposalListView)
 
 
 urlpatterns = patterns('',
+    url(
+        r'^list/$',
+        ProposalListView.as_view(),
+        name='proposal_list'
+    ),
     url(
         r'^submit/$',
         SubmitProposalView.as_view(),

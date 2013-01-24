@@ -146,3 +146,35 @@
     margin-bottom: 20px;
   }
 }
+
+#proposals {
+  td {
+    vertical-align: middle;
+  }
+  .status {
+    font-weight: bold;
+    width: 80px;
+    text-align: center;
+  }
+
+  .approved {
+    color: $successText;
+  }
+  .declined {
+    color: $errorText;
+  }
+  .pending {
+    color: $orange;
+  }
+
+  .action {
+    width: 135px;
+
+    .approve {
+      @include buttonBackground($btnSuccessBackground, $btnSuccessBackgroundHighlight);
+    }
+    .decline {
+      @include buttonBackground($btnDangerBackground, $btnDangerBackgroundHighlight);
+    }
+  }
+}

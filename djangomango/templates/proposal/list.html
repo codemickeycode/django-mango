@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% load i18n endless %}
+
+{% block head_title %}{{ block.super }} | {% trans "Proposals" %}{% endblock %}
+
+{% block content %}
+<div id="proposals">
+  <h2>{% trans "List of Proposals" %}</h2>
+  {% if proposal_list %}
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>{% trans "Title" %}</th>
+          <th>{% trans "Speaker" %}</th>
+          <th>{% trans "Status" %}</th>
+          <th>{% trans "Actions" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% paginate proposal_list %}
+        {% for proposal in proposal_list %}
+        <tr>
+          <td>
+            <a href="{{ proposal.get_absolute_url }}">
+              {{ proposal.title|title }}
+            </a>
+          </td>
+          <td>
+            <a href="{{ proposal.speaker.profile.get_absolute_url }}">
+              {{ proposal.speaker.get_full_name|title }}
+            </a>
+          </td>
+          <td class="status {{ proposal.status }}">{{ proposal.status|capfirst }}</td>
+          <td class="action">
+            <a href="{% url proposal_list %}?approve={{ proposal.id }}" class="btn btn-small approve">{% trans "Approve" %}</a> 
+            <a href="{% url proposal_list %}?decline={{ proposal.id }}" class="btn btn-small decline">{% trans "Decline" %}</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>   
+    </table>
+    {% show_pages %}
+  {% else %}
+    <p>{% trans "There are no proposals yet." %}</p>
+  {% endif %}
+</div>
+{% endblock content %}

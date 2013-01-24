@@ -22,11 +22,12 @@
         <h1 class="span6">
           <a href="{% url home %}">{% trans "PyCon Philippines 2013" %}</a>
         </h1>
-        <div id="primary-nav" class="span5 offset1">
+        <div id="primary-nav" class="span6">
           {% if request.user.is_authenticated %}
             <ul class="nav nav-pills">
               <li><a href="{% url submit_proposal %}">{% trans "Submit Proposal" %}</a></li>
               {% if request.user|in_group:"moderator" %}
+              <li><a href="{% url proposal_list %}">{% trans "Proposals" %}</a></li>
               <li><a href="{% url schedule_proposal %}">{% trans "Schedule" %}</a></li>
               {% endif %}
               <li class="dropdown">
