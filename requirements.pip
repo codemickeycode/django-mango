@@ -18,6 +18,7 @@ django-templatetag-handlebars==1.2.0
 django-imagekit==2.0.2
 django-braces==0.2.1
 Pillow==1.7.8
+raven==3.1.4
 
 # For development only. Although these will be installed, its not enabled
 # by default so you'll have to enable them manually in your local settings if

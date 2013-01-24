@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'longerusername',
     'templatetag_handlebars',
     'imagekit',
+    'raven.contrib.django',
 
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -140,9 +141,14 @@ LOGGING['handlers']['console'] = {
     'class': 'logging.StreamHandler',
     'formatter': 'simple'
 }
+LOGGING['handlers']['sentry'] = {
+    'level': 'ERROR',
+    'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+    'formatter': 'simple'
+}
 
 LOGGING['loggers']['generic'] = {
-    'handlers': ['console'],
+    'handlers': ['console', 'sentry'],
     'level': 'DEBUG'
 }
 
