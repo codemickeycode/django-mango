@@ -130,6 +130,10 @@ AUTHENTICATION_BACKENDS += (
 # Logging
 #==============================================================================
 
+LOGGING['root'] = {
+    'level': 'WARNING',
+    'handlers': ['sentry'],
+}
 LOGGING['formatters'] = {
     'simple': {
         'format': '[%(name)s] %(levelname)s %(asctime)s: %(message)s'
@@ -150,6 +154,11 @@ LOGGING['handlers']['sentry'] = {
 LOGGING['loggers']['generic'] = {
     'handlers': ['console', 'sentry'],
     'level': 'DEBUG'
+}
+LOGGING['loggers']['sentry.errors'] = {
+    'level': 'DEBUG',
+    'handlers': ['console'],
+    'propagate': False,
 }
 
 #==============================================================================
