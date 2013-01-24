@@ -90,26 +90,29 @@ def send_email_notification(sender, instance, **kwargs):
 
     site = get_site()
     old_proposal = Proposal.objects.get(id=instance.id)
-    protocol = 'http' if not settings.current_request.is_secure() else 'https'
+    proposal_url = (settings.current_request
+                    .build_absolute_uri(instance.get_absolute_url()))
     context = {'proposal_title': instance.title,
-               'proposal_url': instance.get_absolute_url(),
-               'domain': site.domain,
-               'site_name': site.name,
-               'protocol': protocol}
+               'proposal_url': proposal_url,
+               'site_name': site.name}
     subject = render_to_string('proposal/email/status_subject.html').strip()
 
     if instance.status == APPROVED and old_proposal.status != APPROVED:
         message_tpl = 'proposal/email/status_approved_body.html'
     elif instance.status == DECLINED and old_proposal.status != DECLINED:
         message_tpl = 'proposal/email/status_declined_body.html'
+    else:
+        # No change
+        return
 
     try:
         message = render_to_string(message_tpl, context)
         msg = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL,
                            [instance.speaker.email])
-        msg.content_subtype = "html"
+        msg.content_subtype = 'html'
         msg.send()
     except smtplib.SMTPException as e:
         logger.error('Unable to send email: %s' % str(e))
+
 
 pre_save.connect(send_email_notification, sender=Proposal)
