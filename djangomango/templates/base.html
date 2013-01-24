@@ -18,34 +18,55 @@
 
   <div class="container">
     <div class="page-header">
-      <div class="row">
-        <h1 class="span6">
-          <a href="{% url home %}">{% trans "PyCon Philippines 2013" %}</a>
-        </h1>
-        <div id="primary-nav" class="span6">
-          {% if request.user.is_authenticated %}
-            <ul class="nav nav-pills">
-              <li><a href="{% url submit_proposal %}">{% trans "Submit Proposal" %}</a></li>
-              {% if request.user|in_group:"moderator" %}
-              <li><a href="{% url proposal_list %}">{% trans "Proposals" %}</a></li>
-              <li><a href="{% url schedule_proposal %}">{% trans "Schedule" %}</a></li>
-              {% endif %}
-              <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">{% trans "My Account" %} <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="{% url profile_details request.user.profile.slug %}">{% trans "Profile" %}</a></li>
-                  <li class="divider"></li>
-                  <li><a href="{% url logout %}">{% trans "Logout" %}</a></li>
-                </ul>
-              </li>
-            </ul>
-          {% else %}
-            <span>
-              <a href="{% url login %}" class="btn btn-info">{% trans "Login" %}</a>
-              <a href="{% url signup %}" class="btn btn-success">{% trans "Signup" %}</a>
-            </span>
-          {% endif %}
-        </div>
+      <h1>
+        <a href="{% url home %}">{% trans "PyCon Philippines 2013" %}</a>
+      </h1>
+      <div id="primary-nav">
+        {% if request.user.is_authenticated %}
+          <ul class="nav nav-pills">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">{% trans "About" %} <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="">{% trans "Announcements" %}</a></li>
+                <li><a href="">{% trans "PyCon Philippines 2013" %}</a></li>
+                <li><a href="">{% trans "Code of Conduct" %}</a></li>
+                <li><a href="">{% trans "Venue" %}</a></li>
+                <li><a href="">{% trans "Staff" %}</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">{% trans "Sponsors" %} <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="">{% trans "Apply for Sponsorship" %}</a></li>
+                <li><a href="">{% trans "Sponsorship Packages" %}</a></li>
+                <li><a href="">{% trans "List of Sponsors" %}</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">{% trans "Speaking" %} <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="{% url submit_proposal %}">{% trans "Submit a Proposal" %}</a></li>
+                {% if request.user|in_group:"moderator" %}
+                <li><a href="{% url proposal_list %}">{% trans "List of Proposals" %}</a></li>
+                <li><a href="{% url schedule_proposal %}">{% trans "Schedule" %}</a></li>
+                {% endif %}
+              </ul>
+            </li>
+            <li class="dropdown pull-right">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">{% trans "Account" %} <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="{% url profile_details request.user.profile.slug %}">{% trans "Profile" %}</a></li>
+                <li class="divider"></li>
+                <li><a href="{% url logout %}">{% trans "Logout" %}</a></li>
+              </ul>
+            </li>
+          </ul>
+        {% else %}
+          <span>
+            <a href="{% url login %}" class="btn btn-info">{% trans "Login" %}</a>
+            <a href="{% url signup %}" class="btn btn-success">{% trans "Signup" %}</a>
+          </span>
+        {% endif %}
       </div>
     </div>
 

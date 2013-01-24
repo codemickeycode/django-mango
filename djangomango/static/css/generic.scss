@@ -16,16 +16,12 @@
 }
 
 .page-header {
+  border: 1px solid $grayLighter;
+  @include border-radius($baseBorderRadius);
+  padding: 20px 20px 0 20px;
   h1 a:hover {
     text-decoration: none;
     color: $orange;
-  }
-  #primary-nav {
-    > .nav,
-    > span {
-      margin: 15px 0 0 0;
-      float: right;
-    }
   }
 }
 
@@ -114,7 +110,7 @@
         width: 80px;
       }
     }
-  } 
+  }
 }
 
 #profile {
