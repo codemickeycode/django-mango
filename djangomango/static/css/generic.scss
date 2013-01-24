@@ -23,6 +23,13 @@
     text-decoration: none;
     color: $orange;
   }
+
+  #primary-nav {
+    span {
+      display: block;
+      margin: 20px 0;
+    }
+  }
 }
 
 #home {

@@ -13,10 +13,12 @@ class RegistrationBackend(SimpleBackend):
         """ Override register since we no longer use username. """
 
         email, password = kwargs['email'], kwargs['password1']
-        user = User.objects.create_user(email, email, password)
-        user.first_name = kwargs['first_name']
-        user.last_name = kwargs['last_name']
-        user.save()           # save name
+        user = User.objects.create(username=email,
+                                   email=email,
+                                   first_name=kwargs['first_name'],
+                                   last_name=kwargs['last_name'])
+        user.set_password(password)
+        user.save()           # save password
         user.profile.save()   # save profile to slugify the name
 
         # authenticate() always has to be called before login(), and
@@ -32,7 +34,7 @@ class RegistrationBackend(SimpleBackend):
 class EmailAuthBackend(object):
     """
     Email Authentication Backend
-    
+
     Allows a user to sign in using an email/password pair rather than
     a username/password pair.
     """
@@ -44,7 +46,7 @@ class EmailAuthBackend(object):
             if user.check_password(password):
                 return user
         except User.DoesNotExist:
-            return None 
+            return None
 
     def get_user(self, user_id):
         """ Get a User object from the user_id. """

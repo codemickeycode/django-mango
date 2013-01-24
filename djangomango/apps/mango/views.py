@@ -15,6 +15,7 @@ class HomeView(TemplateView):
         context['proposal_list'] = proposals
 
         # add speakers list
+        # TODO: cache this somewhere and invalidate upon new proposal approval
         speaker_ids = proposals.distinct().values_list('speaker_id', flat=True)
         context['speaker_list'] = User.objects.filter(id__in=speaker_ids)
 
