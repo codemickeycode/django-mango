@@ -102,6 +102,9 @@ def send_email_notification(sender, instance, **kwargs):
         message_tpl = 'proposal/email/status_approved_body.html'
     elif instance.status == DECLINED and old_proposal.status != DECLINED:
         message_tpl = 'proposal/email/status_declined_body.html'
+    else:
+        # No change
+        return
 
     try:
         message = render_to_string(message_tpl, context)
@@ -111,5 +114,6 @@ def send_email_notification(sender, instance, **kwargs):
         msg.send()
     except smtplib.SMTPException as e:
         logger.error('Unable to send email: %s' % str(e))
+
 
 pre_save.connect(send_email_notification, sender=Proposal)
