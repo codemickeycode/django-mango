@@ -19,6 +19,13 @@ from ..mango.templatetags.utils import in_group
 logger = logging.getLogger('generic')
 
 
+class ModeratorRequiredMixin(object):
+
+    @method_decorator(user_passes_test(moderator_required))
+    def dispatch(self, *args, **kwargs):
+        return super(ModeratorRequiredMixin, self).dispatch(*args, **kwargs)
+
+
 class ProposalDetailsView(DetailView):
     template_name = 'proposal/details.html'
     model = Proposal
@@ -55,15 +62,11 @@ class SubmitProposalView(LoginRequiredMixin, CreateView):
         return super(SubmitProposalView, self).form_valid(form)
 
 
-class ScheduleProposalView(TemplateView):
+class ScheduleProposalView(LoginRequiredMixin, ModeratorRequiredMixin, TemplateView):
     template_name = 'proposal/schedule.html'
 
-    @method_decorator(user_passes_test(moderator_required))
-    def dispatch(self, *args, **kwargs):
-        return super(ScheduleProposalView, self).dispatch(*args, **kwargs)
 
-
-class ProposalListView(ListView):
+class ProposalListView(LoginRequiredMixin, ModeratorRequiredMixin, ListView):
     template_name = 'proposal/list.html'
     context_object_name = 'proposal_list'
     queryset = Proposal.objects.all().select_related()
@@ -71,6 +74,7 @@ class ProposalListView(ListView):
     def get(self, request, *args, **kwargs):
         approve = self.request.GET.get('approve', None)
         decline = self.request.GET.get('decline', None)
+        next = self.request.GET.get('next', None)
         action = 'approve' if approve else 'decline'
 
         try:
@@ -90,6 +94,6 @@ class ProposalListView(ListView):
         finally:
             # only redirect if an approve or decline did happened
             if approve or decline:
-                return redirect('proposal_list')
+                return redirect(next or 'proposal_list')
 
         return super(ProposalListView, self).get(request, *args, **kwargs)

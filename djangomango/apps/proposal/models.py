@@ -64,6 +64,9 @@ class Proposal(BaseModel):
     def __unicode__(self):
         return self.title
 
+    def is_approved(self):
+        return self.status == APPROVED
+
     @models.permalink
     def get_absolute_url(self):
         return ('proposal_details', [self.slug])

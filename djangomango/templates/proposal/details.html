@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load i18n %}
+{% load in_group from utils %}
 
 {% block head_title %}{{ block.super }} | {{ proposal.title }}{% endblock %}
 
@@ -14,6 +15,10 @@
         {{ audience_name }}
       </span>
     {% endwith %}
+
+    {% if not proposal.is_approved and request.user|in_group:"moderator" %}
+      / <span class="label {{ proposal.status }}">{{ proposal.status }}</span>
+    {% endif %}
   </div>
 
   <h3>{% trans "Description" %}</h3>
@@ -21,5 +26,13 @@
 
   <h3>{% trans "Abstract" %}</h3>
   <p>{{ proposal.abstract }}</p>
+
+  {% if not proposal.is_approved and request.user|in_group:"moderator" %}
+    <div class="actions">
+      <a href="{% url proposal_list %}?approve={{ proposal.id }}&next={% url proposal_details proposal.slug %}" class="btn btn-small approve">{% trans "Approve" %}</a> 
+      <a href="{% url proposal_list %}?decline={{ proposal.id }}&next={% url proposal_details proposal.slug %}" class="btn btn-small decline">{% trans "Decline" %}</a>
+    </div>
+  {% endif %}
+
 </div>
 {% endblock content %}

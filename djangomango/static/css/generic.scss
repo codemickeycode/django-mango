@@ -1,7 +1,7 @@
 @import "bootstrap/variables";
 @import "bootstrap/mixins";
 
-@mixin audience() {
+@mixin proposal_audience() {
   .novice {
     background-color: $orange;
   }
@@ -15,10 +15,23 @@
   }
 }
 
+@mixin proposal_status() {
+  .approved {
+    color: $successText;
+  }
+  .declined {
+    color: $errorText;
+  }
+  .pending {
+    color: $orange;
+  }
+}
+
 .page-header {
   border: 1px solid $grayLighter;
-  @include border-radius($baseBorderRadius);
   padding: 20px 20px 0 20px;
+  @include border-radius($baseBorderRadius);
+
   h1 a:hover {
     text-decoration: none;
     color: $orange;
@@ -56,7 +69,7 @@
           color: $grayLight;
           margin-bottom: 5px;
 
-          @include audience();
+          @include proposal_audience();
         }
       }
     }
@@ -90,7 +103,27 @@
 }
 
 #proposal {
-  @include audience();
+  @include proposal_audience();
+
+  .declined,
+  .pending {
+    color: #fff;
+  }
+  .declined {
+    background: $errorText;
+  }
+  .pending {
+    background: $orange;
+  }
+
+  .actions {
+    .approve {
+      @include buttonBackground($btnSuccessBackground, $btnSuccessBackgroundHighlight);
+    }
+    .decline {
+      @include buttonBackground($btnDangerBackground, $btnDangerBackgroundHighlight);
+    }
+  }
 }
 
 #submit-proposal {
@@ -160,15 +193,7 @@
     text-align: center;
   }
 
-  .approved {
-    color: $successText;
-  }
-  .declined {
-    color: $errorText;
-  }
-  .pending {
-    color: $orange;
-  }
+  @include proposal_status();
 
   .action {
     width: 135px;
