@@ -1,10 +1,12 @@
+import logging
+
 from django.contrib import messages
 from django.views.generic import CreateView, TemplateView, DetailView, ListView
 from django.utils.translation import ugettext as _
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import user_passes_test
-from django.http import Http404, HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.http import Http404
+from django.shortcuts import redirect
 
 from braces.views import LoginRequiredMixin
 
@@ -12,6 +14,9 @@ from .forms import SubmitProposalForm
 from .models import APPROVED, PENDING, DECLINED, Proposal
 from ..mango.utils import moderator_required
 from ..mango.templatetags.utils import in_group
+
+
+logger = logging.getLogger('generic')
 
 
 class ProposalDetailsView(DetailView):
@@ -66,22 +71,25 @@ class ProposalListView(ListView):
     def get(self, request, *args, **kwargs):
         approve = self.request.GET.get('approve', None)
         decline = self.request.GET.get('decline', None)
+        action = 'approve' if approve else 'decline'
 
         try:
             if approve:
                 proposal = Proposal.objects.get(id=int(approve))
                 proposal.status = APPROVED
                 proposal.save()
+                logger.info('approving proposal: %s' % proposal)
 
             if decline:
                 proposal = Proposal.objects.get(id=int(decline))
                 proposal.status = DECLINED
                 proposal.save()
-        except (Proposal.DoesNotExist, ValueError):
-            pass
+                logger.info('declining proposal: %s' % proposal)
+        except (Proposal.DoesNotExist, ValueError) as e:
+            logger.error('error while %s proposal: %s' % (action, str(e)))
         finally:
             # only redirect if an approve or decline did happened
             if approve or decline:
-                return HttpResponseRedirect(reverse('proposal_list'))
+                return redirect('proposal_list')
 
         return super(ProposalListView, self).get(request, *args, **kwargs)

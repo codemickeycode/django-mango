@@ -4,6 +4,32 @@
 
 {% block head_title %}{{ block.super }} | {% trans "Proposals" %}{% endblock %}
 
+{% block javascript %}
+<script type="text/javascript">
+  $(function() {
+    $('.approve, .decline').click(function(e) {
+      e.preventDefault();
+      bootbox.animate(false);
+
+      var msg = null,
+          action = $(e.currentTarget);
+      if (action.hasClass('approve')) {
+        msg = '{% trans "Are you sure you want to approve this proposal?" %}';
+      }
+      else {
+        msg = '{% trans "Are you sure you want to decline this proposal?" %}'; 
+      }
+
+      bootbox.confirm(msg, function(result) {
+        if (result) {
+          window.location = action.attr('href');
+        }
+      });
+    });
+  });
+</script>
+{% endblock javascript %}
+
 {% block content %}
 <div id="proposals">
   <h2>{% trans "List of Proposals" %}</h2>

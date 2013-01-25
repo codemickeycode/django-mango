@@ -2,12 +2,10 @@ import hashlib
 
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
 from django.conf import settings
 
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
-from imagekit.imagecache.base import NonValidatingImageCacheBackend
 from autoslug import AutoSlugField
 
 from .utils import get_mugshots_path
@@ -53,10 +51,3 @@ class UserProfile(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('profile_details', [self.slug])
-
-
-def create_user_profile(sender, instance, created, **kwargs):
-    """ Create a profile for each user created. """
-    if created:
-        UserProfile.objects.create(user=instance)
-post_save.connect(create_user_profile, sender=User)

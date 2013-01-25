@@ -1,21 +1,10 @@
-import logging
-import smtplib
-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
-from django.db.models.signals import pre_save
-from django.core.mail import EmailMessage
-from django.conf import settings
-from django.template.loader import render_to_string
 
 from autoslug import AutoSlugField
 
 from ..mango.models import BaseModel
-from ..mango.utils import get_site
-
-
-logger = logging.getLogger('generic')
 
 
 PENDING = 'pending'
@@ -67,7 +56,7 @@ class Proposal(BaseModel):
     abstract = models.TextField()
     duration = models.TimeField()
     status = models.CharField(max_length=10, choices=PROPOSAL_STATUS,
-                              default='pending')
+                              default=PENDING)
 
     class Meta:
         ordering = ('-created',)
@@ -78,41 +67,3 @@ class Proposal(BaseModel):
     @models.permalink
     def get_absolute_url(self):
         return ('proposal_details', [self.slug])
-
-
-def send_email_notification(sender, instance, **kwargs):
-    """ Send email notification when a proposal has been approved/declined. """
-
-    # only continue if this proposal has been previously saved,
-    # to avoid sending email for newly created proposal.
-    if not instance.id:
-        return
-
-    site = get_site()
-    old_proposal = Proposal.objects.get(id=instance.id)
-    proposal_url = (settings.current_request
-                    .build_absolute_uri(instance.get_absolute_url()))
-    context = {'proposal_title': instance.title,
-               'proposal_url': proposal_url,
-               'site_name': site.name}
-    subject = render_to_string('proposal/email/status_subject.html').strip()
-
-    if instance.status == APPROVED and old_proposal.status != APPROVED:
-        message_tpl = 'proposal/email/status_approved_body.html'
-    elif instance.status == DECLINED and old_proposal.status != DECLINED:
-        message_tpl = 'proposal/email/status_declined_body.html'
-    else:
-        # No change
-        return
-
-    try:
-        message = render_to_string(message_tpl, context)
-        msg = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL,
-                           [instance.speaker.email])
-        msg.content_subtype = 'html'
-        msg.send()
-    except smtplib.SMTPException as e:
-        logger.error('Unable to send email: %s' % str(e))
-
-
-pre_save.connect(send_email_notification, sender=Proposal)
