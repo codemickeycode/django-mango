@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'templatetag_handlebars',
     'imagekit',
     'raven.contrib.django',
+    'assetstoolkit',
 
     'django.contrib.auth',
     'django.contrib.contenttypes',
