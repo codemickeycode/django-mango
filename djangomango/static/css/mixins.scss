@@ -1,0 +1,28 @@
+@import "bootstrap/variables";
+
+
+@mixin proposal_audience() {
+  .novice {
+    background-color: $orange;
+  }
+
+  .intermediate {
+    background-color: $green;
+  }
+
+  .experienced {
+    background-color: $grayDark;
+  }
+}
+
+@mixin proposal_status() {
+  .approved {
+    color: $successText;
+  }
+  .declined {
+    color: $errorText;
+  }
+  .pending {
+    color: $orange;
+  }
+}

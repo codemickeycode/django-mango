@@ -56,10 +56,17 @@
         return context.dates.push(moment.format('DD MMM YYYY'));
       });
       _.each(_.range(0, context.startTime.hours()), function(hour) {
-        var formattedHour;
-        formattedHour = context.startTime.clone().add('hours', hour).format('hh:mm A');
-        return context.hours.push(formattedHour);
+        var hourSegments;
+        hour = context.startTime.clone().add('hours', hour);
+        hourSegments = [];
+        _.each(_.range(0, 4), function(i) {
+          var hourQuarter;
+          hourQuarter = hour.clone().add('minutes', i * 15);
+          return hourSegments.push(hourQuarter.format('hh:mm A'));
+        });
+        return context.hours.push(hourSegments);
       });
+      context.tracks = _.range(1, context.tracks + 1);
       return $(this.el).html(this.template(context));
     };
 
@@ -74,7 +81,8 @@
         startDate: moment("2013-06-01"),
         endDate: moment("2013-06-03"),
         startTime: moment([null, null, null, 9, 0]),
-        duration: moment.duration(8, 'hours')
+        duration: moment.duration(8, 'hours'),
+        tracks: 3
       });
       scheduleView = new ScheduleView({
         model: conference

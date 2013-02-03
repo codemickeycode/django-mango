@@ -9,26 +9,30 @@
   {% verbatim %}
     <script id="schedule-template" type="text/x-handlebars-template">
       <div id="schedule">
+        {{#each dates}}
         <table class="table table-striped table-bordered">
           <thead>
             <tr>
-              <th>{% trans "Hours" %}</th>
-              {{#each dates}}
+              <th>{{this}}</th>
+              {{#each ../tracks}}
                 <th>{{this}}</th>
               {{/each}}
             </tr>
           </thead>
           <tbody>
-          {{#each hours}}
-            <tr>
-              <td>{{this}}</td>
-              {{#each ../dates}}
-                <td>--</td>
-              {{/each}}
-            </tr>
+          {{#each ../hours}}
+            {{#each this}}
+              <tr>
+                <td>{{this}}</td>
+                {{#each ../../../tracks}}
+                  <td>--</td>
+                {{/each}}
+              </tr>
+            {{/each}}  
           {{/each}}
           </tbody>
         </table>
+        {{/each}}
       </div>
     </script>
   {% endverbatim %}

@@ -1,31 +1,8 @@
 @import "bootstrap/variables";
 @import "bootstrap/mixins";
 
-@mixin proposal_audience() {
-  .novice {
-    background-color: $orange;
-  }
+@import "mixins";
 
-  .intermediate {
-    background-color: $green;
-  }
-
-  .experienced {
-    background-color: $grayDark;
-  }
-}
-
-@mixin proposal_status() {
-  .approved {
-    color: $successText;
-  }
-  .declined {
-    color: $errorText;
-  }
-  .pending {
-    color: $orange;
-  }
-}
 
 .page-header {
   border: 1px solid $grayLighter;
@@ -137,11 +114,11 @@
     thead {
       th {
         text-align: center;
+        background-color: $infoBackground;
       }
     }
     tr {
       td {
-        height: 70px;
         vertical-align: middle;
       }
       td:first-child {
