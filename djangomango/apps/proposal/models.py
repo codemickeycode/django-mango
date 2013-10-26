@@ -17,7 +17,7 @@ class ProposalType(models.Model):
         return self.name
 
     def __str__(self):
-        return '<Category: %s>' % str(self.id)
+        return unicode(self)
 
 
 class Category(models.Model):
@@ -31,7 +31,7 @@ class Category(models.Model):
         return self.name
 
     def __str__(self):
-        return '<Category: %s>' % str(self.id)
+        return unicode(self)
 
 
 class AudienceLevel(models.Model):
@@ -42,7 +42,7 @@ class AudienceLevel(models.Model):
         return self.name
 
     def __str__(self):
-        return '<AudienceLevel: %s>' % str(self.id)
+        return unicode(self)
 
 
 class Proposal(TimeStampedModel):
@@ -71,7 +71,7 @@ class Proposal(TimeStampedModel):
         return '%s by %s' % (self.title, self.speaker.first_name)
 
     def __str__(self):
-        return '<Proposal: %s>' % str(self.id)
+        return unicode(self)
 
     @models.permalink
     def get_absolute_url(self):

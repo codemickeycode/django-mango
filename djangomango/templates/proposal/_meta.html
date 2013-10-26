@@ -1,0 +1,15 @@
+{% load i18n %}
+<div class="meta">
+  <span class="speaker">
+    {% trans "Speaker" %}: <a href="{{ proposal.speaker.profile.get_absolute_url }}">{{ proposal.speaker.get_full_name }}</a>
+  </span>
+  <span class="audience">
+    {% trans "Audience" %}: 
+    {% with proposal.audience.name as audience_name %}
+      <a href="#"><span class="label radius {{ audience_name|lower }}">{{ audience_name }}</span></a>
+    {% endwith %}
+  </span>
+  <span class="category">
+    {% trans "Category" %}: <a href="#">{{ proposal.category.name }}</a>
+  </span>
+</div>

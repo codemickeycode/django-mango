@@ -1,0 +1,14 @@
+{% load i18n %}
+{% if not request.user.is_authenticated %}
+  <div id="login-or-register">
+    <a href="#">{% trans "Login" %}</a>
+    <span></span>
+    <a href="#">{% trans "Register" %}</a>
+  </div>
+{% else %}
+  <div id="loggedin-user">
+    {{ request.user.name }}
+    <span></span>
+    <a href="#">{% trans "Logout" %}</a>
+  </div>
+{% endif %}

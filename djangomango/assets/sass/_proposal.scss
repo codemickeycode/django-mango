@@ -1,0 +1,47 @@
+#submit-proposal {
+  form {
+    #id_abstract {
+      height: 110px;
+    }
+    #id_description {
+      height: 115px;
+    }
+  }
+}
+
+#proposal-list {
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      border-bottom: 1px solid $grayLight;
+      margin-bottom: 20px;
+
+      &.last {
+        border-bottom: 0px;
+      }
+
+      .meta {
+        margin-bottom: 10px;
+
+        span {
+          display: inline-block;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}
+
+#proposal-details {
+  .meta {
+    margin-bottom: 10px;
+
+    span {
+      display: inline-block;
+      margin-right: 10px;
+    }
+  }
+}

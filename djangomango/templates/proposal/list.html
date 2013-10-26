@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}{{ block.super }} | {% trans "Proposal List" %}{% endblock %}
+
+{% block content %}
+<div id="proposal-list" class="large-12 columns large-centered">
+  {% if proposal_list %}
+    <ul>
+      {% for proposal in proposal_list %}
+        <li{% if forloop.last %} class="last"{% endif %}>
+          <h3><a href="{{ proposal.get_absolute_url }}">{{ proposal.title }}</a></h3>
+          {% include "proposal/_meta.html" %}
+          <p>{{ proposal.abstract }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>{% trans "There are no proposals yet." %}</p>
+  {% endif %}
+</div>
+{% endblock content %}

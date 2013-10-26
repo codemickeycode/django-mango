@@ -1,0 +1,57 @@
+form {
+  .form-actions {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 20px !important;
+
+    input {
+      margin: 0;
+      @include button-base;
+      @include radius;
+    }
+  }
+
+  #errorMsg {
+    ul,
+    ol {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  .errorField {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: block;
+    font-size: 14px;
+
+    strong {
+      font-weight: normal;
+    }
+  }
+}
+
+.notification {
+  display: none;
+  position: fixed;
+  cursor: pointer;
+  width: 100%;
+  background: $grayLight;
+  text-align: center;
+  border-top: 2px solid $white;
+  z-index: 9999;
+  padding: 10px;
+  border: 0;
+
+  p {
+    margin: 0;
+    display: inline-block;
+    margin-right: 5px;
+  }
+}
+
+#messages {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

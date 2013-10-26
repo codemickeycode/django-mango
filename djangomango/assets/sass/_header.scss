@@ -1,0 +1,31 @@
+#header {
+  padding: 15px 0px;
+  margin-bottom: 20px;
+
+  h1 {
+    margin: 0;
+    font-size: 25px;
+    line-height: 25px;
+  }
+
+  #login-or-register,
+  #loggedin-user {
+    text-align: right;
+
+    a {
+      line-height: 25px;
+    }
+
+    a,
+    span {
+      display: inline-block;
+    }
+
+    span {
+      border-right: 1px solid $gray;
+      width: 1px;
+      height: 12px;
+      margin: 0 5px;
+    }
+  }
+}

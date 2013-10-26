@@ -170,6 +170,7 @@ INSTALLED_APPS = (
     # 'longerusername',
     # 'templatetag_handlebars',
     # 'imagekit',
+    'crispy_forms',
     'impersonate',
     'usernameless',
 
