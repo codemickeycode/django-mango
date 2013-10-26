@@ -1,21 +1,12 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 from autoslug import AutoSlugField
+from model_utils import Choices
+from model_utils.models import TimeStampedModel
 
-from ..mango.models import BaseModel
-
-
-PENDING = 'pending'
-APPROVED = 'approved'
-DECLINED = 'declined'
-
-PROPOSAL_STATUS = (
-    (PENDING, _(u'Pending')),
-    (APPROVED, _(u'Approved')),
-    (DECLINED, _(u'Declined'))
-)
+User = get_user_model()
 
 
 class ProposalType(models.Model):
@@ -24,6 +15,9 @@ class ProposalType(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def __str__(self):
+        return '<Category: %s>' % str(self.id)
 
 
 class Category(models.Model):
@@ -36,6 +30,9 @@ class Category(models.Model):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return '<Category: %s>' % str(self.id)
+
 
 class AudienceLevel(models.Model):
     """ Novice, Intermediate or Experienced """
@@ -44,25 +41,37 @@ class AudienceLevel(models.Model):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return '<AudienceLevel: %s>' % str(self.id)
 
-class Proposal(BaseModel):
+
+class Proposal(TimeStampedModel):
+
+    STATUS = Choices(('pending', 'Pending'),
+                     ('approved', 'Approved'),
+                     ('declined', 'Declined'))
+
     speaker = models.ForeignKey(User, related_name='proposals')
     title = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='title', unique=True)
-    type = models.ForeignKey(ProposalType)
-    audience = models.ForeignKey(AudienceLevel)
-    category = models.ForeignKey(Category)
+    type = models.ForeignKey(ProposalType, related_name='proposals')
+    audience = models.ForeignKey(AudienceLevel, related_name='proposals')
+    category = models.ForeignKey(Category, related_name='proposals')
     description = models.TextField()
     abstract = models.TextField()
     duration = models.TimeField()
-    status = models.CharField(max_length=10, choices=PROPOSAL_STATUS,
-                              default='pending')
+    status = models.CharField(max_length=10,
+                              choices=STATUS,
+                              default=STATUS.pending)
 
     class Meta:
         ordering = ('-created',)
 
     def __unicode__(self):
-        return self.title
+        return '%s by %s' % (self.title, self.speaker.first_name)
+
+    def __str__(self):
+        return '<Proposal: %s>' % str(self.id)
 
     @models.permalink
     def get_absolute_url(self):

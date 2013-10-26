@@ -8,8 +8,8 @@ from django.http import Http404
 from braces.views import LoginRequiredMixin
 
 from .forms import SubmitProposalForm
-from .models import APPROVED, PENDING, Proposal
-from ..mango.utils import moderator_required
+from .models import Proposal
+from libs.utils import moderator_required
 
 
 class ProposalDetailsView(DetailView):
@@ -20,7 +20,7 @@ class ProposalDetailsView(DetailView):
     def get_object(self, queryset=None):
         slug = self.kwargs.get(self.slug_url_kwarg, None)
         try:
-            return Proposal.objects.get(slug=slug, status=APPROVED)
+            return Proposal.objects.get(slug=slug, status=Proposal.STATUS.approved)
         except Proposal.DoesNotExist:
             raise Http404
 
@@ -32,7 +32,7 @@ class SubmitProposalView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.speaker = self.request.user
-        form.instance.status = PENDING
+        form.instance.status = Proposal.STATUS.pending
         messages.info(self.request,
             _(u"Thank you, your proposal is now being reviewed."))
         return super(SubmitProposalView, self).form_valid(form)

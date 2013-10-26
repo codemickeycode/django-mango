@@ -33,7 +33,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': get_env_variable('DB_NAME'),
         'USER': get_env_variable('DB_USER'),
         'PASSWORD': get_env_variable('DB_PASSWORD'),
@@ -163,13 +163,14 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     # 3rd-party apps
-    # 'south',
+    'south',
     # 'django_nose',
     # 'endless_pagination',
     # 'registration',
     # 'longerusername',
     # 'templatetag_handlebars',
     # 'imagekit',
+    'impersonate',
     'usernameless',
 
     # custom apps
